@@ -14,10 +14,10 @@
 Auth::routes();
 
 Route::resource('/message', 'MessagesController')->except([
-    'index', 'create', 'show', 'update', 'edit'
+  'index', 'create', 'show', 'update', 'edit'
 ]);
 
-Route::get('/', 'ProfileController@index');
+Route::get('/', 'ProfileController@index')->name('user.home');
 Route::get('/{name}', 'ProfileController@show')->name('user.show');
 Route::get('/{user}/follow', 'ProfileController@followUser')->name('user.follow');
 Route::get('/{user}/unfollow', 'ProfileController@unFollowUser')->name('user.unfollow');
