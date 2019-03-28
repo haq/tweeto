@@ -8,7 +8,7 @@ class ProfileController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except('show');
     }
 
     public function index()
@@ -29,28 +29,34 @@ class ProfileController extends Controller
         $messages = collect($messages)->sortByDesc('created_at');
 
         return view('home')->with([
+            'user' => $user,
             'messages' => $messages,
-            'followers' => $user->followers->count(),
-            'following' => $user->following->count()
         ]);
     }
 
     public function show(string $name)
     {
-        return view('profile')->with(
-            'user', User::where('name', $name)->firstOrFail()
-        );
+        $user = User::where('name', $name)->firstOrFail();
+
+        return view('profile')->with([
+            'user' => $user,
+            'messages' => $user->messages,
+        ]);
     }
 
     public function followUser(User $user)
     {
-        $user->followers()->attach(auth()->user()->id);
+        if (!auth()->user()->followsUser($user->id)) {
+            $user->followers()->attach(auth()->user()->id);
+        }
         return back()->with('success', 'Followed user');
     }
 
     public function unFollowUser(User $user)
     {
-        $user->followers()->detach(auth()->user()->id);
+        if (auth()->user()->followsUser($user->id)) {
+            $user->followers()->detach(auth()->user()->id);
+        }
         return back()->with('success', 'Unfollowed user');
     }
 }

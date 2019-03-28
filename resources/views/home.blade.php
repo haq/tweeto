@@ -2,15 +2,42 @@
 
 @section('content')
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
+        <div class="float-left">
+
+            <div class="card " style="width: 18rem;">
+                <div class="card-body">
+                    <img src="{{ $user->image() }}" class="rounded" alt="user icon" width="64" height="64">
+                    <div class="d-flex" style="padding-top: 5px;">
+                        <h5 class="card-title">{{ $user->name }}</h5>
+                        <h5 class="text-muted small" style="padding-top: 5px; padding-left: 5px;">
+                            @ {{ $user->cleanedName() }}</h5>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <div class="text-value">{{ count($messages) }}</div>
+                            <div class="text-uppercase text-muted small">Messages</div>
+
+                        </div>
+                        <div>
+                            <div class="text-value">{{ $user->following->count() }}</div>
+                            <div class="text-uppercase text-muted small">Following</div>
+                        </div>
+                        <div>
+                            <div class="text-value">{{ $user->followers->count() }}</div>
+                            <div class="text-uppercase text-muted small">Followers</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10">
                 <div class="card">
                     <div class="card-body">
-                        @if (session('status'))
-                            <div class="alert alert-success" role="alert">
-                                {{ session('status') }}
-                            </div>
-                        @endif
 
                         {!! Form::open(['action' => 'MessagesController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
                         <div class="form-group">
@@ -25,9 +52,10 @@
                             @foreach ($messages as $message)
                                 <div style="" class="card">
                                     <div class="card-header">
-                                        <img src="{{ $message->user->getImage() }}"
-                                             class="img-responsive" alt="user icon" width="32" height="32">
-                                        <a style="padding-left:10px;">{{ $message->user->name }}</a>
+                                        <img src="{{ $message->user->image() }}"
+                                             class="rounded" alt="user icon" width="32" height="32">
+                                        <a style="padding-left:10px;text-decoration: none;"
+                                           href="/{{ $message->user->cleanedName() }}">{{ $message->user->name }}</a>
                                         <div class="float-right">
                                             @if(Auth::user()->id == $message->user->id)
                                                 {!! Form::open(['action' => ['MessagesController@destroy', $message->id], 'method' => 'POST', 'class' => 'float-left']) !!}

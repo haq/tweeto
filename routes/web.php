@@ -14,7 +14,7 @@
 Auth::routes();
 
 Route::resource('/message', 'MessagesController')->except([
-  'index', 'create', 'show', 'update', 'edit'
+    'index', 'create', 'show', 'update', 'edit'
 ]);
 
 Route::get('/', 'ProfileController@index')->name('user.home');

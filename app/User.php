@@ -5,9 +5,13 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Log;
 
 /**
  * @property mixed email
+ * @property mixed name
+ * @property mixed following
+ * @property mixed id
  */
 class User extends Authenticatable
 {
@@ -45,9 +49,14 @@ class User extends Authenticatable
         return $this->hasMany('App\Message');
     }
 
-    public function getImage()
+    public function image(): string
     {
         return 'https://www.gravatar.com/avatar/' . md5(strtolower(trim($this->email)));
+    }
+
+    public function cleanedName(): string
+    {
+        return strtolower(trim($this->name));
     }
 
     public function followers()
@@ -58,6 +67,11 @@ class User extends Authenticatable
     public function following()
     {
         return $this->belongsToMany('App\User', 'followers', 'follower_id', 'leader_id')->withTimestamps();
+    }
+
+    public function followsUser(int $user): bool
+    {
+        return $this->following()->exists($user);
     }
 
 }
