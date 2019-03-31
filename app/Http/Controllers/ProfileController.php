@@ -46,17 +46,14 @@ class ProfileController extends Controller
 
     public function followUser(User $user)
     {
-        if (!auth()->user()->followsUser($user->id)) {
-            $user->followers()->attach(auth()->user()->id);
-        }
-        return back()->with('success', 'Followed user');
-    }
-
-    public function unFollowUser(User $user)
-    {
         if (auth()->user()->followsUser($user->id)) {
             $user->followers()->detach(auth()->user()->id);
+            return back()->with('success', 'Unfollowed user');
+        } elseif (!auth()->user()->followsUser($user->id)) {
+            $user->followers()->attach(auth()->user()->id);
+            return back()->with('success', 'Followed user');
         }
-        return back()->with('success', 'Unfollowed user');
+        return back();
     }
+
 }

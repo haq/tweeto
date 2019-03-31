@@ -61,12 +61,12 @@ class User extends Authenticatable
 
     public function followers()
     {
-        return $this->belongsToMany('App\User', 'followers', 'leader_id', 'follower_id')->withTimestamps();
+        return $this->belongsToMany('App\User', 'followers', 'leader_id', 'follower_id');
     }
 
     public function following()
     {
-        return $this->belongsToMany('App\User', 'followers', 'follower_id', 'leader_id')->withTimestamps();
+        return $this->belongsToMany('App\User', 'followers', 'follower_id', 'leader_id');
     }
 
     public function followsUser(int $user): bool

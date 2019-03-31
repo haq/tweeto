@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Message;
+use App\User;
 use Illuminate\Http\Request;
 
 class MessagesController extends Controller
@@ -37,4 +38,11 @@ class MessagesController extends Controller
         $message->delete();
         return back()->with('success', 'Message deleted');
     }
+
+    public function favoriteMessage(Message $message)
+    {
+        $user->followers()->attach(auth()->user()->id);
+        return back()->with('success', 'Followed user');
+    }
+
 }

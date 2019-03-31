@@ -9,7 +9,7 @@
                     <div class="float-right">
                         @if(!auth()->guest() && auth()->id() !== $user->id)
                             @if(auth()->user()->followsUser($user->id))
-                                <a class="btn btn-danger" href="{{ route('user.unfollow', $user->id) }}">
+                                <a class="btn btn-danger" href="{{ route('user.follow', $user->id) }}">
                                     Unfollow
                                 </a>
                             @else
@@ -59,14 +59,14 @@
                                         <img src="{{ $message->user->image() }}"
                                              class="rounded" alt="user icon" width="32" height="32">
                                         <a style="padding-left:10px;text-decoration: none;"
-                                           href="/{{ $message->user->cleanedName() }}">{{ $message->user->name }}</a>
+                                           href="/{{ $message->user->cleanedName() }}">
+                                            {{ $message->user->name }}
+                                        </a>
                                         <div class="float-right">
-                                            @if(Auth::user()->id == $message->user->id)
-                                                {!! Form::open(['action' => ['MessagesController@destroy', $message->id], 'method' => 'POST', 'class' => 'float-left']) !!}
-                                                {{ Form::hidden('_method', 'DELETE') }}
-                                                {{ Form::submit('Delete', ['class' => 'btn btn-outline-danger']) }}
-                                                {!! Form::close() !!}
-                                            @endif
+                                            <a class="btn btn-outline-success"
+                                               href="{{ route('message.favorite', $message->id) }}">
+                                                Favorite
+                                            </a>
                                         </div>
                                     </div>
                                     <div class="card-body">
