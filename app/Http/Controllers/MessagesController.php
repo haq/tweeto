@@ -39,10 +39,15 @@ class MessagesController extends Controller
         return back()->with('success', 'Message deleted');
     }
 
-    public function favoriteMessage(Message $message)
+    public function favorite(Message $message)
     {
-        $user->followers()->attach(auth()->user()->id);
-        return back()->with('success', 'Followed user');
+        if ($message->userFavorites(auth()->id())) {
+            $message->favorites()->detach(auth()->user()->id);
+            return back()->with('success', 'Unfavorited message');
+        } else {
+            $message->favorites()->attach(auth()->user()->id);
+            return back()->with('success', 'Favorited message');
+        }
     }
 
 }

@@ -25,4 +25,9 @@ class Message extends Model
     {
         return $this->belongsToMany('App\User', 'favorites', 'message_id', 'user_id')->withTimestamps();
     }
+
+    public function userFavorites(int $user): bool
+    {
+        return $this->favorites()->exists($user);
+    }
 }

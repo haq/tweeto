@@ -44,16 +44,20 @@ class ProfileController extends Controller
         ]);
     }
 
+    public function showSettings()
+    {
+        return view('settings')->with('user', auth()->user());
+    }
+
     public function followUser(User $user)
     {
         if (auth()->user()->followsUser($user->id)) {
             $user->followers()->detach(auth()->user()->id);
             return back()->with('success', 'Unfollowed user');
-        } elseif (!auth()->user()->followsUser($user->id)) {
+        } else {
             $user->followers()->attach(auth()->user()->id);
             return back()->with('success', 'Followed user');
         }
-        return back();
     }
 
 }

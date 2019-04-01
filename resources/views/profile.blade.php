@@ -63,10 +63,19 @@
                                             {{ $message->user->name }}
                                         </a>
                                         <div class="float-right">
-                                            <a class="btn btn-outline-success"
-                                               href="{{ route('message.favorite', $message->id) }}">
-                                                Favorite
-                                            </a>
+                                            <span class="badge badge-secondary">{{ $message->favorites->count() }}</span>
+                                            -
+                                            @if($message->userFavorites($user->id))
+                                                <a class="btn btn-outline-danger"
+                                                   href="{{ route('message.favorite', $message->id) }}">
+                                                    Unfavorite
+                                                </a>
+                                            @else
+                                                <a class="btn btn-outline-success"
+                                                   href="{{ route('message.favorite', $message->id) }}">
+                                                    Favorite
+                                                </a>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="card-body">
