@@ -57,8 +57,22 @@
                                         <a style="padding-left:10px;text-decoration: none;"
                                            href="/{{ $message->user->cleanedName() }}">{{ $message->user->name }}</a>
                                         <div class="float-right">
+                                            <span class="badge badge-secondary">{{ $message->favorites->count() }}</span>
+                                            -
+                                            @if($message->userFavorites($user->id))
+                                                <a class="btn btn-outline-danger pr"
+                                                   href="{{ route('message.favorite', $message->id) }}">
+                                                    Unfavorite
+                                                </a>
+                                            @else
+                                                <a class="btn btn-outline-success"
+                                                   href="{{ route('message.favorite', $message->id) }}">
+                                                    Favorite
+                                                </a>
+                                            @endif
+
                                             @if(Auth::user()->id == $message->user->id)
-                                                {!! Form::open(['action' => ['MessagesController@destroy', $message->id], 'method' => 'POST', 'class' => 'float-left']) !!}
+                                                {!! Form::open(['action' => ['MessagesController@destroy', $message->id], 'method' => 'POST', 'class' => 'float-right pl-2']) !!}
                                                 {{ Form::hidden('_method', 'DELETE') }}
                                                 {{ Form::submit('Delete', ['class' => 'btn btn-outline-danger']) }}
                                                 {!! Form::close() !!}
