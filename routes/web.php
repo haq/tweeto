@@ -7,6 +7,8 @@ Route::delete('/message/{message}', 'MessagesController@destroy')->name('message
 Route::get('/message/{message}/favorite', 'MessagesController@favorite')->name('message.favorite');
 
 Route::get('/', 'ProfileController@index')->name('user.home');
+Route::get('/following', 'ProfileController@following')->name('user.following');
+Route::get('/followers', 'ProfileController@followers')->name('user.followers');
 
 Route::get('/settings', 'ProfileController@edit')->name('user.settings');
 Route::put('/settings', 'ProfileController@update')->name('users.settings.update');

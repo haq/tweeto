@@ -4,27 +4,32 @@
     <div class="container d-none d-md-block">
         <div class="float-left">
 
-            <div class="card " style="width: 18rem;">
+            <div class="card" style="width: 18rem;">
                 <div class="card-body">
                     <img src="{{ $user->image() }}" class="rounded" alt="user icon" width="64" height="64">
                     <div class="d-flex" style="padding-top: 5px;">
                         <h5 class="card-title">{{ $user->name }}</h5>
                         <h5 class="text-muted small" style="padding-top: 5px; padding-left: 5px;">
-                            @ {{ $user->cleanedName() }}</h5>
+                            {{ '@' }}{{ $user->cleanedName() }}</h5>
                     </div>
                     <div class="d-flex justify-content-between">
                         <div>
-                            <div class="text-value">{{ count($messages) }}</div>
+                            <div>{{ $user->messages->count() }}</div>
                             <div class="text-uppercase text-muted small">Messages</div>
-
                         </div>
                         <div>
-                            <div class="text-value">{{ $user->following->count() }}</div>
-                            <div class="text-uppercase text-muted small">Following</div>
+                            <div>{{ $user->following->count() }}</div>
+                            <div class="text-uppercase text-muted small" style="cursor: pointer;"
+                                 onclick="window.location='/following';">
+                                Following
+                            </div>
                         </div>
                         <div>
-                            <div class="text-value">{{ $user->followers->count() }}</div>
-                            <div class="text-uppercase text-muted small">Followers</div>
+                            <div>{{ $user->followers->count() }}</div>
+                            <div class="text-uppercase text-muted small" style="cursor: pointer;"
+                                 onclick="window.location='/followers';">
+                                Followers
+                            </div>
                         </div>
                     </div>
                 </div>

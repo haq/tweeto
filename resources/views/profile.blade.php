@@ -23,11 +23,11 @@
                     <div class="d-flex" style="padding-top: 5px;">
                         <h5 class="card-title">{{ $user->name }}</h5>
                         <h5 class="text-muted small" style="padding-top: 5px; padding-left: 5px;">
-                            @ {{ $user->cleanedName() }}</h5>
+                            {{ '@' }}{{ $user->cleanedName() }}</h5>
                     </div>
                     <div class="d-flex justify-content-between">
                         <div>
-                            <div class="text-value">{{ count($messages) }}</div>
+                            <div class="text-value">{{ $user->messages->count() }}</div>
                             <div class="text-uppercase text-muted small">Messages</div>
 
                         </div>
