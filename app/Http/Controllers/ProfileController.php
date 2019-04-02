@@ -38,7 +38,15 @@ class ProfileController extends Controller
 
     public function show(string $name)
     {
-        $user = User::where('name', $name)->firstOrFail();
+        $name = strtolower($name);
+
+        $user = User::all()->filter(function ($user) use ($name) {
+            return strcmp($user->cleanedName(), $name) == 0;
+        })->first();
+
+        if (!$user) {
+            return abort(404);
+        }
 
         return view('profile')->with([
             'user' => $user,
@@ -66,13 +74,13 @@ class ProfileController extends Controller
         $name = $request->name;
 
         if (strcmp($name, $user->name) == 0) {
-            return back()->with('error', 'Name cannot be the same');
+            return back()->with('error', 'New name cannot be the same as your current one.');
         } else if (User::where('name', $name)->exists()) {
-            return back()->with('error', 'Name already taken');
+            return back()->with('error', 'Name already taken.');
         } else {
             $user->name = $name;
             $user->save();
-            return back()->with('success', 'Name updated');
+            return back()->with('success', 'Name updated.');
         }
     }
 
@@ -105,10 +113,10 @@ class ProfileController extends Controller
     {
         if (auth()->user()->followsUser($user->id)) {
             $user->followers()->detach(auth()->user()->id);
-            return back()->with('success', 'Unfollowed user');
+            return back()->with('success', 'Unfollowed user.');
         } else {
             $user->followers()->attach(auth()->user()->id);
-            return back()->with('success', 'Followed user');
+            return back()->with('success', 'Followed user.');
         }
     }
 

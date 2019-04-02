@@ -24,7 +24,7 @@ class MessagesController extends Controller
         $message->user_id = auth()->id();
         $message->save();
 
-        return back()->with('success', 'Message created');
+        return back()->with('success', 'Message created.');
     }
 
     public function destroy($id)
@@ -36,17 +36,17 @@ class MessagesController extends Controller
         }
 
         $message->delete();
-        return back()->with('success', 'Message deleted');
+        return back()->with('success', 'Message deleted.');
     }
 
     public function favorite(Message $message)
     {
         if ($message->userFavorites(auth()->id())) {
             $message->favorites()->detach(auth()->user()->id);
-            return back()->with('success', 'Unfavorited message');
+            return back()->with('success', 'Unfavorited message.');
         } else {
             $message->favorites()->attach(auth()->user()->id);
-            return back()->with('success', 'Favorited message');
+            return back()->with('success', 'Favorited message.');
         }
     }
 
