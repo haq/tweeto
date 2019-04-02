@@ -56,7 +56,7 @@ class User extends Authenticatable
 
     public function cleanedName(): string
     {
-        return strtolower(trim($this->name));
+        return strtolower(trim(str_replace(' ', '', $this->name)));
     }
 
     public function followers()

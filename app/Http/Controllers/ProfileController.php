@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
@@ -44,9 +46,59 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function showSettings()
+    public function edit()
     {
-        return view('settings')->with('user', auth()->user());
+        return view('settings.settings')->with('user', auth()->user());
+    }
+
+    public function editPassword()
+    {
+        return view('settings.password')->with('user', auth()->user());
+    }
+
+    public function update(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|string'
+        ]);
+
+        $user = auth()->user();
+        $name = $request->name;
+
+        if (strcmp($name, $user->name) == 0) {
+            return back()->with('error', 'Name cannot be the same');
+        } else if (User::where('name', $name)->exists()) {
+            return back()->with('error', 'Name already taken');
+        } else {
+            $user->name = $name;
+            $user->save();
+            return back()->with('success', 'Name updated');
+        }
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'current-password' => 'required',
+            'new-password' => 'required|string|min:6',
+        ]);
+
+        $user = auth()->user();
+        $current = $request->input('current-password');
+        $new = $request->input('new-password');
+
+        if (!(Hash::check($current, $user->password))) {
+            return back()->with('error', 'Your current password does not matches with the password you provided.');
+        }
+
+        if (strcmp($current, $new) == 0) {
+            return back()->with('error', 'New Password cannot be same as your current password.');
+        }
+
+        $user->password = Hash::make($request->input('new-password'));
+        $user->save();
+
+        return back()->with('success', 'Password updated.');
     }
 
     public function followUser(User $user)
