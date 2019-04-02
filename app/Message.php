@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property array|string|null message
  * @property int|null user_id
  * @property mixed created_at
+ * @property mixed favorites
  * @method static findOrFail($id)
  */
 class Message extends Model
@@ -23,11 +24,13 @@ class Message extends Model
 
     public function favorites()
     {
-        return $this->belongsToMany('App\User', 'favorites', 'message_id', 'user_id')->withTimestamps();
+        return $this->belongsToMany('App\User', 'favorites')->withTimestamps();
     }
 
-    public function userFavorites(int $user): bool
+    public function userFavorites(int $userId): bool
     {
-        return $this->favorites()->exists($user);
+        return !$this->favorites->filter(function (User $user) use ($userId) {
+            return $user->id == $userId;
+        })->isEmpty();
     }
 }

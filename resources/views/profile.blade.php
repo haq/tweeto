@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
+    <div class="container d-none d-md-block">
         <div class="float-left">
 
             <div class="card " style="width: 18rem;">
@@ -9,12 +9,12 @@
                     <div class="float-right">
                         @if(!auth()->guest() && auth()->id() !== $user->id)
                             @if(auth()->user()->followsUser($user->id))
-                                <a class="btn btn-danger" href="{{ route('user.follow', $user->id) }}">
-                                    Unfollow
+                                <a class="btn btn-outline-dark" href="{{ route('user.follow', $user->id) }}">
+                                    <i class="fas fa-user-minus"></i>
                                 </a>
                             @else
-                                <a class="btn btn-primary" href="{{ route('user.follow', $user->id) }}">
-                                    Follow
+                                <a class="btn btn-outline-dark" href="{{ route('user.follow', $user->id) }}">
+                                    <i class="fas fa-user-plus"></i>
                                 </a>
                             @endif
                         @endif
@@ -65,15 +65,15 @@
                                         <div class="float-right">
                                             <span class="badge badge-secondary">{{ $message->favorites->count() }}</span>
                                             -
-                                            @if($message->userFavorites($user->id))
-                                                <a class="btn btn-outline-danger"
+                                            @if($message->userFavorites(auth()->id()))
+                                                <a class="btn btn-outline-dark"
                                                    href="{{ route('message.favorite', $message->id) }}">
-                                                    Unfavorite
+                                                    <i class="fas fa-star"></i>
                                                 </a>
                                             @else
-                                                <a class="btn btn-outline-success"
+                                                <a class="btn btn-outline-dark"
                                                    href="{{ route('message.favorite', $message->id) }}">
-                                                    Favorite
+                                                    <i class="far fa-star"></i>
                                                 </a>
                                             @endif
                                         </div>

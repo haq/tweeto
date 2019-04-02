@@ -50,7 +50,7 @@ class ProfileController extends Controller
 
         return view('profile')->with([
             'user' => $user,
-            'messages' => $user->messages,
+            'messages' => $user->messages->sortByDesc('created_at'),
         ]);
     }
 
@@ -112,10 +112,10 @@ class ProfileController extends Controller
     public function followUser(User $user)
     {
         if (auth()->user()->followsUser($user->id)) {
-            $user->followers()->detach(auth()->user()->id);
+            $user->followers()->detach(auth()->id());
             return back()->with('success', 'Unfollowed user.');
         } else {
-            $user->followers()->attach(auth()->user()->id);
+            $user->followers()->attach(auth()->id());
             return back()->with('success', 'Followed user.');
         }
     }

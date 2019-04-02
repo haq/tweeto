@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
+    <div class="container d-none d-md-block">
         <div class="float-left">
 
             <div class="card " style="width: 18rem;">
@@ -59,22 +59,22 @@
                                         <div class="float-right">
                                             <span class="badge badge-secondary">{{ $message->favorites->count() }}</span>
                                             -
-                                            @if($message->userFavorites($user->id))
-                                                <a class="btn btn-outline-danger pr"
+                                            @if($message->userFavorites(auth()->id()))
+                                                <a class="btn btn-outline-dark"
                                                    href="{{ route('message.favorite', $message->id) }}">
-                                                    Unfavorite
+                                                    <i class="fas fa-star"></i>
                                                 </a>
                                             @else
-                                                <a class="btn btn-outline-success"
+                                                <a class="btn btn-outline-dark"
                                                    href="{{ route('message.favorite', $message->id) }}">
-                                                    Favorite
+                                                    <i class="far fa-star"></i>
                                                 </a>
                                             @endif
 
                                             @if(Auth::user()->id == $message->user->id)
                                                 {!! Form::open(['action' => ['MessagesController@destroy', $message->id], 'method' => 'POST', 'class' => 'float-right pl-2']) !!}
                                                 {{ Form::hidden('_method', 'DELETE') }}
-                                                {{ Form::submit('Delete', ['class' => 'btn btn-outline-danger']) }}
+                                                {{ Form::button('<i class="fas fa-trash"></i>', ['class' => 'btn btn-outline-danger', 'type' => 'submit']) }}
                                                 {!! Form::close() !!}
                                             @endif
                                         </div>

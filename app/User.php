@@ -6,6 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\Debug\Debug;
 
 /**
  * @property mixed email
@@ -61,17 +62,19 @@ class User extends Authenticatable
 
     public function followers()
     {
-        return $this->belongsToMany('App\User', 'followers', 'leader_id', 'follower_id');
+        return $this->belongsToMany('App\User', 'followers', 'leader_id', 'follower_id')->withTimestamps();
     }
 
     public function following()
     {
-        return $this->belongsToMany('App\User', 'followers', 'follower_id', 'leader_id');
+        return $this->belongsToMany('App\User', 'followers', 'follower_id', 'leader_id')->withTimestamps();
     }
 
-    public function followsUser(int $user): bool
+    public function followsUser(int $userId): bool
     {
-        return $this->following()->exists($user);
+        return !$this->following->filter(function (User $user) use ($userId) {
+            return $user->id == $userId;
+        })->isEmpty();
     }
 
 }
