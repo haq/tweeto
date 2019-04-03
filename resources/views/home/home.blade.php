@@ -49,7 +49,7 @@
                             {{ Form::label('message', 'Message') }}
                             {{ Form::textarea('message', '', ['class' => 'form-control', 'rows' => 3, 'placeholder' => 'Message']) }}
                         </div>
-                        {{ Form::submit('Create', ['class'=>'btn btn-primary']) }}
+                        {{ Form::button('<i class="fas fa-share"></i>', ['class' => 'btn btn-primary', 'type' => 'submit']) }}
                         {!! Form::close() !!}
 
                         @if(count($messages) > 0)

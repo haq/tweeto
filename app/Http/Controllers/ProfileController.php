@@ -10,7 +10,7 @@ class ProfileController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except('show');
+        $this->middleware('auth')->except(['show', 'search']);
     }
 
     public function index()
@@ -54,11 +54,7 @@ class ProfileController extends Controller
 
     public function show(string $name)
     {
-        $name = strtolower($name);
-
-        $user = User::all()->filter(function ($user) use ($name) {
-            return strcmp($user->cleanedName(), $name) == 0;
-        })->first();
+        $user = User::getUserByName($name);
 
         if (!$user) {
             return abort(404);
@@ -136,6 +132,21 @@ class ProfileController extends Controller
             $user->followers()->attach(auth()->id());
             return back()->with('success', 'Followed user.');
         }
+    }
+
+    public function search(Request $request)
+    {
+        $request->validate([
+            'search' => 'required|string'
+        ]);
+
+        $user = User::getUserByName($request->search);
+
+        if (!$user) {
+            return back()->with('error', 'User not found.');
+        }
+
+        return redirect('/' . $user->cleanedName());
     }
 
 }

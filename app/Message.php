@@ -27,7 +27,7 @@ class Message extends Model
         return $this->belongsToMany('App\User', 'favorites')->withTimestamps();
     }
 
-    public function userFavorites(int $userId): bool
+    public function userFavorites($userId): bool
     {
         return !$this->favorites->filter(function (User $user) use ($userId) {
             return $user->id == $userId;

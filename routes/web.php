@@ -17,3 +17,4 @@ Route::put('/settings/password', 'ProfileController@updatePassword')->name('user
 
 Route::get('/{name}', 'ProfileController@show')->name('user.show');
 Route::get('/{user}/follow', 'ProfileController@followUser')->name('user.follow');
+Route::post('/search','ProfileController@search')->name('user.search');

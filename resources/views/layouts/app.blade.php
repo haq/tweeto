@@ -26,7 +26,6 @@
 
     <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
         <div class="container">
-
             <a class="navbar-brand" href="{{ url('/') }}">
                 {{ config('app.name', 'Laravel') }}
             </a>
@@ -39,11 +38,19 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav mr-auto">
-
+                    {!! Form::open(['action' => 'ProfileController@search', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
+                    <div class="input-group">
+                        {{ Form::text('search', '', ['class' => 'form-control', 'placeholder' => 'Search', 'required' => 'required']) }}
+                        <div class="input-group-append">
+                            {{ Form::button('<i class="fas fa-search"></i>', ['class' => 'btn btn-outline-primary', 'type' => 'submit']) }}
+                        </div>
+                    </div>
+                    {!! Form::close() !!}
                 </ul>
 
                 <!-- Right Side Of Navbar -->
                 <ul class="navbar-nav ml-auto">
+
                     <!-- Authentication Links -->
                     @guest
                         <li class="nav-item">
