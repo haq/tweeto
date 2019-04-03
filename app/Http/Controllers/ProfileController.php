@@ -19,6 +19,11 @@ class ProfileController extends Controller
         $user = auth()->user();
         $messages = array();
 
+        foreach ($user->reMessages as $message) {
+            $message['remessage'] = true;
+            array_push($messages, $message);
+        }
+
         foreach ($user->messages as $message) {
             array_push($messages, $message);
         }
@@ -29,9 +34,56 @@ class ProfileController extends Controller
             }
         }
 
-        $messages = collect($messages)->sortByDesc('created_at');
+        $messages = collect($messages)->sort(function (Message $a, Message $b) use ($user) {
+            if ($a->remessage && $b->remessage) {
+                return $a->pivot->created_at < $b->pivot->created_at;
+            } else if ($a->remessage && !$b->remessage) {
+                return $a->pivot->created_at < $b->created_at;
+            } else if (!$a->remessage && $b->remessage) {
+                return $a->created_at < $b->pivot->created_at;
+            } else {
+                return $a->created_at < $b->created_at;
+            }
+        });
 
         return view('home.home')->with([
+            'user' => $user,
+            'messages' => $messages,
+        ]);
+    }
+
+    public function show(string $user)
+    {
+        $user = User::getUserByName($user);
+
+        if (!$user) {
+            return abort(404);
+        }
+
+        $messages = array();
+
+        foreach ($user->reMessages as $message) {
+            $message['remessage'] = true;
+            array_push($messages, $message);
+        }
+
+        foreach ($user->messages as $message) {
+            array_push($messages, $message);
+        }
+
+        $messages = collect($messages)->sort(function (Message $a, Message $b) use ($user) {
+            if ($a->remessage && $b->remessage) {
+                return $a->pivot->created_at < $b->pivot->created_at;
+            } else if ($a->remessage && !$b->remessage) {
+                return $a->pivot->created_at < $b->created_at;
+            } else if (!$a->remessage && $b->remessage) {
+                return $a->created_at < $b->pivot->created_at;
+            } else {
+                return $a->created_at < $b->created_at;
+            }
+        });
+
+        return view('profile')->with([
             'user' => $user,
             'messages' => $messages,
         ]);
@@ -50,20 +102,6 @@ class ProfileController extends Controller
         return view('home.data')->with([
             'title' => 'Following',
             'data' => auth()->user()->followers
-        ]);
-    }
-
-    public function show(string $user)
-    {
-        $user = User::getUserByName($user);
-
-        if (!$user) {
-            return abort(404);
-        }
-
-        return view('profile')->with([
-            'user' => $user,
-            'messages' => $user->messages->sortByDesc('created_at'),
         ]);
     }
 

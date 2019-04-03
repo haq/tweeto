@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null user_id
  * @property mixed created_at
  * @property mixed favorites
+ * @property mixed|null pivot
+ * @property bool|null remessage
  * @method static findOrFail($id)
  */
 class Message extends Model

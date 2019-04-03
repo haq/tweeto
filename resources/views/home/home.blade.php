@@ -81,7 +81,7 @@
                                                 {{ Form::hidden('_method', 'DELETE') }}
                                                 {{ Form::button('<i class="fas fa-trash"></i>', ['class' => 'btn btn-outline-danger', 'type' => 'submit']) }}
                                                 {!! Form::close() !!}
-                                            @else
+                                            @elseif(!$message->remessage)
                                                 {!! Form::open(['action' => ['MessagesController@reMessage', $message->id], 'method' => 'POST', 'class' => 'float-right pl-2']) !!}
                                                 {{ Form::button('<i class="fas fa-retweet"></i>', ['class' => 'btn btn-outline-dark', 'type' => 'submit']) }}
                                                 {!! Form::close() !!}
@@ -90,7 +90,12 @@
                                     </div>
                                     <div class="card-body">
                                         <p style="color:#666;">
-                                            {{ $message->created_at->diffForHumans() }}
+                                            @if($message->remessage)
+                                                <i class="fas fa-retweet"></i>
+                                                {{ $message->pivot->created_at->diffForHumans() }}
+                                            @else
+                                                {{ $message->created_at->diffForHumans() }}
+                                            @endif
                                         </p>
                                         <p class="card-text">{{ $message->message }}</p>
                                     </div>
