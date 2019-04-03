@@ -51,4 +51,10 @@ class MessagesController extends Controller
         }
     }
 
+    public function reMessage(Request $request, Message $message)
+    {
+        auth()->user()->reMessages()->attach($message);
+        return back()->with('success', 'Re messaged.');
+    }
+
 }

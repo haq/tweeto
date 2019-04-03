@@ -70,6 +70,11 @@ class User extends Authenticatable
         return $this->belongsToMany('App\User', 'followers', 'follower_id', 'leader_id')->withTimestamps();
     }
 
+    public function reMessages()
+    {
+        return $this->belongsToMany('App\Message', 're_messages')->withTimestamps();
+    }
+
     public function followsUser(int $userId): bool
     {
         return !$this->following->filter(function (User $user) use ($userId) {

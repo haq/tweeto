@@ -9,13 +9,13 @@
                     <div class="float-right">
                         @if(!auth()->guest() && auth()->id() !== $user->id)
                             @if(auth()->user()->followsUser($user->id))
-                                <a class="btn btn-outline-dark" href="{{ route('user.follow', $user->id) }}">
-                                    <i class="fas fa-user-minus"></i>
-                                </a>
+                                {!! Form::open(['action' => ['ProfileController@followUser',  $user->id], 'method' => 'POST']) !!}
+                                {{ Form::button('<i class="fas fa-user-minus"></i>', ['class' => 'btn btn-outline-dark', 'type' => 'submit']) }}
+                                {!! Form::close() !!}
                             @else
-                                <a class="btn btn-outline-dark" href="{{ route('user.follow', $user->id) }}">
-                                    <i class="fas fa-user-plus"></i>
-                                </a>
+                                {!! Form::open(['action' => ['ProfileController@followUser',  $user->id], 'method' => 'POST']) !!}
+                                {{ Form::button('<i class="fas fa-user-plus"></i>', ['class' => 'btn btn-outline-dark', 'type' => 'submit']) }}
+                                {!! Form::close() !!}
                             @endif
                         @endif
                     </div>
@@ -75,6 +75,12 @@
                                                    href="{{ route('message.favorite', $message->id) }}">
                                                     <i class="far fa-star"></i>
                                                 </a>
+                                            @endif
+
+                                            @if(auth()->id() != $message->user->id)
+                                                {!! Form::open(['action' => ['MessagesController@reMessage', $message->id], 'method' => 'POST', 'class' => 'float-right pl-2']) !!}
+                                                {{ Form::button('<i class="fas fa-retweet"></i>', ['class' => 'btn btn-outline-dark', 'type' => 'submit']) }}
+                                                {!! Form::close() !!}
                                             @endif
                                         </div>
                                     </div>

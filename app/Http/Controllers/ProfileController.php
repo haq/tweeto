@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Message;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -52,9 +53,9 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function show(string $name)
+    public function show(string $user)
     {
-        $user = User::getUserByName($name);
+        $user = User::getUserByName($user);
 
         if (!$user) {
             return abort(404);
@@ -123,7 +124,7 @@ class ProfileController extends Controller
         return back()->with('success', 'Password updated.');
     }
 
-    public function followUser(User $user)
+    public function followUser(Request $request, User $user)
     {
         if (auth()->user()->followsUser($user->id)) {
             $user->followers()->detach(auth()->id());
