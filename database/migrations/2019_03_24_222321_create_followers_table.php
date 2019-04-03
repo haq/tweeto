@@ -14,6 +14,7 @@ class CreateFollowersTable extends Migration
     public function up()
     {
         Schema::create('followers', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->increments('id');
 
             $table->integer('follower_id')->unsigned();
