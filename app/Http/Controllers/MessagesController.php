@@ -31,7 +31,7 @@ class MessagesController extends Controller
     {
         $message = Message::findOrFail($id);
 
-        if (auth()->id() !== $message->user_id) {
+        if (auth()->id() != $message->user_id) {
             return back();
         }
 
