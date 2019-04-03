@@ -79,7 +79,7 @@ class User extends Authenticatable
 
     public static function getUserByName(string $name)
     {
-        $name = strtolower($name);
+        $name = strtolower(trim(str_replace(' ', '', $name)));
         return User::all()->filter(function ($user) use ($name) {
             return strcmp($user->cleanedName(), $name) == 0;
         })->first();

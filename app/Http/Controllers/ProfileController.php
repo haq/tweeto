@@ -89,7 +89,7 @@ class ProfileController extends Controller
 
         if (strcmp($name, $user->name) == 0) {
             return back()->with('error', 'New name cannot be the same as your current one.');
-        } else if (User::where('name', $name)->exists()) {
+        } else if (User::getUserByName($name)) {
             return back()->with('error', 'Name already taken.');
         } else {
             $user->name = $name;
