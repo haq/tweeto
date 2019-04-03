@@ -14,9 +14,14 @@ class CreateReMessageTable extends Migration
     public function up()
     {
         Schema::create('re_messages', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
+
             $table->integer('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
             $table->integer('message_id')->unsigned();
+            $table->foreign('message_id')->references('id')->on('messages')->onDelete('cascade');
+
             $table->timestamps();
         });
     }
