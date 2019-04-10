@@ -100,7 +100,7 @@ class ProfileController extends Controller
     public function followers()
     {
         return view('home.data')->with([
-            'title' => 'Following',
+            'title' => 'Followers',
             'data' => auth()->user()->followers
         ]);
     }
@@ -123,8 +123,6 @@ class ProfileController extends Controller
 
         $user = auth()->user();
         $name = $request->name;
-
-        // TODO: fix name check
 
         if (strcmp($name, $user->name) == 0) {
             return back()->with('error', 'New name cannot be the same as your current one.');
