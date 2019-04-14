@@ -22,8 +22,7 @@
           integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 </head>
 <body>
-<div id="app">
-
+<div>
     <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
         <div class="container">
             <a class="navbar-brand" href="{{ url('/') }}">
@@ -40,7 +39,7 @@
                 <ul class="navbar-nav mr-auto">
                     {!! Form::open(['action' => 'ProfileController@search', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
                     <div class="input-group">
-                        {{ Form::text('search', '', ['class' => 'form-control', 'placeholder' => 'Search', 'required' => 'required']) }}
+                        {{ Form::text('search', '', ['class' => 'form-control', 'placeholder' => 'Search', 'required' => 'required', 'id' => 'search-input']) }}
                         <div class="input-group-append">
                             {{ Form::button('<i class="fas fa-search"></i>', ['class' => 'btn btn-outline-primary', 'type' => 'submit']) }}
                         </div>
@@ -97,5 +96,23 @@
         @yield('content')
     </main>
 </div>
+
+
+<script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
+<script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.min.js"></script>
+<script>
+    const client = algoliasearch('162H3MT04D', 'e7e343ddd36b7f733f0c0b06aabf7ffb'),
+        index = client.initIndex('users');
+
+    autocomplete('#search-input', {hint: true}, {
+        source: autocomplete.sources.hits(index, {hitsPerPage: 10}),
+        displayKey: 'name',
+        templates: {
+            suggestion: function (suggestion) {
+                return '<div class="card"><div class="card-body">' + suggestion._highlightResult.name.value + '</div></div>';
+            }
+        }
+    });
+</script>
 </body>
 </html>

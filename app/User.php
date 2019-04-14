@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\Debug\Debug;
+use Laravel\Scout\Searchable;
 
 /**
  * @property mixed email
@@ -16,7 +17,7 @@ use Symfony\Component\Debug\Debug;
  */
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, Searchable;
 
     /**
      * The attributes that are mass assignable.
