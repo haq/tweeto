@@ -22,11 +22,11 @@
 
                                 </div>
                                 <div>
-                                    <div>{{ $user->following->count() }}</div>
+                                    <div>{{ $user->followings()->get()->count() }}</div>
                                     <div class="text-uppercase text-muted small">Following</div>
                                 </div>
                                 <div>
-                                    <div>{{ $user->followers->count() }}</div>
+                                    <div>{{ $user->followers()->get()->count() }}</div>
                                     <div class="text-uppercase text-muted small">Followers</div>
                                 </div>
                             </div>

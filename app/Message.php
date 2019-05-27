@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Overtrue\LaravelFollow\Traits\CanBeFavorited;
+use Overtrue\LaravelFollow\Traits\CanBeFollowed;
 
 /**
  * @property array|string|null message
@@ -15,6 +17,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Message extends Model
 {
+    use CanBeFollowed, CanBeFavorited;
+
     protected $fillable = [
         'message'
     ];
@@ -22,17 +26,5 @@ class Message extends Model
     public function user()
     {
         return $this->belongsTo('App\User');
-    }
-
-    public function favorites()
-    {
-        return $this->belongsToMany('App\User', 'favorites')->withTimestamps();
-    }
-
-    public function userFavorites($userId): bool
-    {
-        return !$this->favorites->filter(function (User $user) use ($userId) {
-            return $user->id == $userId;
-        })->isEmpty();
     }
 }

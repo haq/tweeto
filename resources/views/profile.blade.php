@@ -8,7 +8,7 @@
                 <div class="card-body">
                     <div class="float-right">
                         @if(!auth()->guest() && auth()->id() !== $user->id)
-                            @if(auth()->user()->followsUser($user->id))
+                            @if(auth()->user()->isFollowing($user))
                                 {!! Form::open(['action' => ['ProfileController@followUser',  $user->id], 'method' => 'POST']) !!}
                                 {{ Form::button('<i class="fas fa-user-minus"></i>', ['class' => 'btn btn-outline-dark', 'type' => 'submit']) }}
                                 {!! Form::close() !!}
@@ -32,11 +32,11 @@
 
                         </div>
                         <div>
-                            <div class="text-value">{{ $user->following->count() }}</div>
+                            <div class="text-value">{{ $user->followings()->get()->count() }}</div>
                             <div class="text-uppercase text-muted small">Following</div>
                         </div>
                         <div>
-                            <div class="text-value">{{ $user->followers->count() }}</div>
+                            <div class="text-value">{{ $user->followers()->get()->count() }}</div>
                             <div class="text-uppercase text-muted small">Followers</div>
                         </div>
                     </div>
@@ -63,9 +63,9 @@
                                             {{ $message->user->name }}
                                         </a>
                                         <div class="float-right">
-                                            <span class="badge badge-secondary">{{ $message->favorites->count() }}</span>
+                                            <span class="badge badge-secondary">{{ $message->favoriters()->get()->count() }}</span>
                                             -
-                                            @if($message->userFavorites(auth()->id()))
+                                            @if($message->isFavoritedBy(auth()->user()))
                                                 <a class="btn btn-outline-dark"
                                                    href="{{ route('message.favorite', $message->id) }}">
                                                     <i class="fas fa-star"></i>

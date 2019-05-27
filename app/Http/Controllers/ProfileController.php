@@ -28,7 +28,7 @@ class ProfileController extends Controller
             array_push($messages, $message);
         }
 
-        foreach ($user->following as $followedUser) {
+        foreach ($user->followings()->get() as $followedUser) {
             foreach ($followedUser->messages as $message) {
                 array_push($messages, $message);
             }
@@ -93,7 +93,7 @@ class ProfileController extends Controller
     {
         return view('home.data')->with([
             'title' => 'Following',
-            'data' => auth()->user()->following
+            'data' => auth()->user()->followings()->get()
         ]);
     }
 
@@ -101,7 +101,7 @@ class ProfileController extends Controller
     {
         return view('home.data')->with([
             'title' => 'Followers',
-            'data' => auth()->user()->followers
+            'data' => auth()->user()->followers()->get()
         ]);
     }
 
@@ -162,11 +162,12 @@ class ProfileController extends Controller
 
     public function followUser(Request $request, User $user)
     {
-        if (auth()->user()->followsUser($user->id)) {
-            $user->followers()->detach(auth()->id());
+        $authUser = auth()->user();
+        if ($authUser->isFollowing($user)) {
+            $authUser->unfollow($user);
             return back()->with('success', 'Unfollowed user.');
         } else {
-            $user->followers()->attach(auth()->id());
+            $authUser->follow($user);
             return back()->with('success', 'Followed user.');
         }
     }

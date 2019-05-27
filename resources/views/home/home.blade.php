@@ -18,14 +18,14 @@
                             <div class="text-uppercase text-muted small">Messages</div>
                         </div>
                         <div>
-                            <div>{{ $user->following->count() }}</div>
+                            <div>{{ $user->followings()->get()->count() }}</div>
                             <div class="text-uppercase text-muted small" style="cursor: pointer;"
                                  onclick="window.location='/following';">
                                 Following
                             </div>
                         </div>
                         <div>
-                            <div>{{ $user->followers->count() }}</div>
+                            <div>{{ $user->followers()->get()->count() }}</div>
                             <div class="text-uppercase text-muted small" style="cursor: pointer;"
                                  onclick="window.location='/followers';">
                                 Followers
@@ -62,9 +62,9 @@
                                         <a style="padding-left:10px;text-decoration: none;"
                                            href="/{{ $message->user->cleanedName() }}">{{ $message->user->name }}</a>
                                         <div class="float-right">
-                                            <span class="badge badge-secondary">{{ $message->favorites->count() }}</span>
+                                            <span class="badge badge-secondary">{{ $message->favoriters()->get()->count() }}</span>
                                             -
-                                            @if($message->userFavorites(auth()->id()))
+                                            @if($message->isFavoritedBy(auth()->user()))
                                                 <a class="btn btn-outline-dark"
                                                    href="{{ route('message.favorite', $message->id) }}">
                                                     <i class="fas fa-star"></i>

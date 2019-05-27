@@ -41,12 +41,12 @@ class MessagesController extends Controller
 
     public function favorite(Message $message)
     {
-        $id = auth()->id();
-        if ($message->userFavorites($id)) {
-            $message->favorites()->detach($id);
+        $user = auth()->user();
+        if ($user->hasFavorited($message)) {
+            $user->unfavorite($message);
             return back()->with('success', 'Unfavorited message.');
         } else {
-            $message->favorites()->attach($id);
+            $user->favorite($message);
             return back()->with('success', 'Favorited message.');
         }
     }
