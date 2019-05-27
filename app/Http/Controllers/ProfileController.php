@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Tweet;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
@@ -19,38 +20,11 @@ class ProfileController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $tweets = array();
 
-        foreach ($user->reMessages as $tweet) {
-            $tweet['remessage'] = true;
-            array_push($tweets, $tweet);
-        }
-
-        foreach ($user->tweets as $tweet) {
-            array_push($tweets, $tweet);
-        }
-
-        foreach ($user->followings()->get() as $followedUser) {
-            foreach ($followedUser->$tweets as $tweet) {
-                array_push($tweets, $tweet);
-            }
-        }
-
-        $tweets = collect($tweets)->sort(function (Tweet $a, Tweet $b) use ($user) {
-            if ($a->remessage && $b->remessage) {
-                return $a->pivot->created_at < $b->pivot->created_at;
-            } else if ($a->remessage && !$b->remessage) {
-                return $a->pivot->created_at < $b->created_at;
-            } else if (!$a->remessage && $b->remessage) {
-                return $a->created_at < $b->pivot->created_at;
-            } else {
-                return $a->created_at < $b->created_at;
-            }
-        });
-
-        return view('home.home')->with([
+        return view('profile')->with([
             'user' => $user,
-            'tweets' => $tweets,
+            'tweets' => $this->getTweets($user),
+            'home' => true
         ]);
     }
 
@@ -62,6 +36,15 @@ class ProfileController extends Controller
             return abort(404);
         }
 
+        return view('profile')->with([
+            'user' => $user,
+            'tweets' => $this->getTweets($user, false),
+            'home' => false
+        ]);
+    }
+
+    private function getTweets($user, bool $home = true): Collection
+    {
         $tweets = array();
 
         foreach ($user->reMessages as $tweet) {
@@ -73,7 +56,15 @@ class ProfileController extends Controller
             array_push($tweets, $tweet);
         }
 
-        $tweets = collect($tweets)->sort(function (Tweet $a, Tweet $b) use ($user) {
+        if ($home) {
+            foreach ($user->followings()->get() as $followedUser) {
+                foreach ($followedUser->$tweets as $tweet) {
+                    array_push($tweets, $tweet);
+                }
+            }
+        }
+
+        return collect($tweets)->sort(function (Tweet $a, Tweet $b) use ($user) {
             if ($a->remessage && $b->remessage) {
                 return $a->pivot->created_at < $b->pivot->created_at;
             } else if ($a->remessage && !$b->remessage) {
@@ -84,16 +75,11 @@ class ProfileController extends Controller
                 return $a->created_at < $b->created_at;
             }
         });
-
-        return view('profile')->with([
-            'user' => $user,
-            'tweets' => $tweets,
-        ]);
     }
 
     public function following()
     {
-        return view('home.data')->with([
+        return view('data')->with([
             'title' => 'Following',
             'data' => auth()->user()->followings()->get()
         ]);
@@ -101,7 +87,7 @@ class ProfileController extends Controller
 
     public function followers()
     {
-        return view('home.data')->with([
+        return view('data')->with([
             'title' => 'Followers',
             'data' => auth()->user()->followers()->get()
         ]);

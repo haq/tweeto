@@ -4,21 +4,23 @@
     <div class="container d-none d-md-block">
         <div class="float-left">
 
-            <div class="card " style="width: 18rem;">
+            <div class="card" style="width: 18rem;">
                 <div class="card-body">
-                    <div class="float-right">
-                        @if(!auth()->guest() && auth()->id() !== $user->id)
-                            @if(auth()->user()->isFollowing($user))
-                                {!! Form::open(['action' => ['ProfileController@followUser',  $user->id], 'method' => 'POST']) !!}
-                                {{ Form::button('<i class="fas fa-user-minus"></i>', ['class' => 'btn btn-outline-dark', 'type' => 'submit']) }}
-                                {!! Form::close() !!}
-                            @else
-                                {!! Form::open(['action' => ['ProfileController@followUser',  $user->id], 'method' => 'POST']) !!}
-                                {{ Form::button('<i class="fas fa-user-plus"></i>', ['class' => 'btn btn-outline-dark', 'type' => 'submit']) }}
-                                {!! Form::close() !!}
+                    @if($home)
+                        <div class="float-right">
+                            @if(!auth()->guest() && auth()->id() !== $user->id)
+                                @if(auth()->user()->isFollowing($user))
+                                    {!! Form::open(['action' => ['ProfileController@followUser',  $user->id], 'method' => 'POST']) !!}
+                                    {{ Form::button('<i class="fas fa-user-minus"></i>', ['class' => 'btn btn-outline-dark', 'type' => 'submit']) }}
+                                    {!! Form::close() !!}
+                                @else
+                                    {!! Form::open(['action' => ['ProfileController@followUser',  $user->id], 'method' => 'POST']) !!}
+                                    {{ Form::button('<i class="fas fa-user-plus"></i>', ['class' => 'btn btn-outline-dark', 'type' => 'submit']) }}
+                                    {!! Form::close() !!}
+                                @endif
                             @endif
-                        @endif
-                    </div>
+                        </div>
+                    @endif
                     <img src="{{ $user->image() }}" class="rounded" alt="user icon" width="64" height="64">
                     <div class="d-flex" style="padding-top: 5px;">
                         <h5 class="card-title">{{ $user->name }}</h5>
@@ -27,17 +29,30 @@
                     </div>
                     <div class="d-flex justify-content-between">
                         <div>
-                            <div class="text-value">{{ $user->tweets->count() }}</div>
+                            <div>{{ $user->tweets->count() }}</div>
                             <div class="text-uppercase text-muted small">Tweets</div>
-
                         </div>
                         <div>
-                            <div class="text-value">{{ $user->followings()->get()->count() }}</div>
-                            <div class="text-uppercase text-muted small">Following</div>
+                            <div>{{ $user->followings()->get()->count() }}</div>
+                            @if($home)
+                                <div class="text-uppercase text-muted small" style="cursor: pointer;"
+                                     onclick="window.location='/following';">
+                                    Following
+                                </div>
+                            @else
+                                <div class="text-uppercase text-muted small">Following</div>
+                            @endif
                         </div>
                         <div>
-                            <div class="text-value">{{ $user->followers()->get()->count() }}</div>
-                            <div class="text-uppercase text-muted small">Followers</div>
+                            <div>{{ $user->followers()->get()->count() }}</div>
+                            @if($home)
+                                <div class="text-uppercase text-muted small" style="cursor: pointer;"
+                                     onclick="window.location='/followers';">
+                                    Followers
+                                </div>
+                            @else
+                                <div class="text-uppercase text-muted small">Followers</div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -52,8 +67,19 @@
                 <div class="card">
                     <div class="card-body">
 
+                        @if($home)
+                            {!! Form::open(['action' => 'TweetsController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
+                            <div class="form-group">
+                                {{ Form::label('tweet', 'Tweet') }}
+                                {{ Form::textarea('tweet', '', ['class' => 'form-control', 'rows' => 3, 'placeholder' => 'Tweet']) }}
+                            </div>
+                            {{ Form::button('<i class="fas fa-share"></i>', ['class' => 'btn btn-primary', 'type' => 'submit']) }}
+                            {!! Form::close() !!}
+                            <hr style="width: 40%">
+                        @endif
+
                         @foreach ($tweets as $tweet)
-                            <div style="" class="card">
+                            <div class="card">
                                 <div class="card-header">
                                     <img src="{{ $tweet->user->image() }}"
                                          class="rounded" alt="user icon" width="32" height="32">
