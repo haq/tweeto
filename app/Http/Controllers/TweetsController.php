@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Message;
+use App\Tweet;
 use App\User;
 use Illuminate\Http\Request;
 
-class MessagesController extends Controller
+class TweetsController extends Controller
 {
     public function __construct()
     {
@@ -16,42 +16,42 @@ class MessagesController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'message' => 'required'
+            'tweet' => 'required'
         ]);
 
-        $message = new Message();
-        $message->message = $request->input('message');
-        $message->user_id = auth()->id();
-        $message->save();
+        $tweet = new Tweet();
+        $tweet->message = $request->tweet;
+        $tweet->user_id = auth()->id();
+        $tweet->save();
 
-        return back()->with('success', 'Message created.');
+        return back()->with('success', 'Tweet created.');
     }
 
     public function destroy($id)
     {
-        $message = Message::findOrFail($id);
+        $message = Tweet::findOrFail($id);
 
         if (auth()->id() != $message->user_id) {
             return back();
         }
 
         $message->delete();
-        return back()->with('success', 'Message deleted.');
+        return back()->with('success', 'Tweet deleted.');
     }
 
-    public function favorite(Message $message)
+    public function favorite(Tweet $message)
     {
         $user = auth()->user();
         if ($user->hasFavorited($message)) {
             $user->unfavorite($message);
-            return back()->with('success', 'Unfavorited message.');
+            return back()->with('success', 'Unfavorited tweet.');
         } else {
             $user->favorite($message);
-            return back()->with('success', 'Favorited message.');
+            return back()->with('success', 'Favorited tweet.');
         }
     }
 
-    public function reMessage(Request $request, Message $message)
+    public function reMessage(Request $request, Tweet $message)
     {
         auth()->user()->reMessages()->attach($message);
         return back()->with('success', 'Re messaged.');

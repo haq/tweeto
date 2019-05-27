@@ -15,7 +15,7 @@ use Overtrue\LaravelFollow\Traits\CanBeFollowed;
  * @property bool|null remessage
  * @method static findOrFail($id)
  */
-class Message extends Model
+class Tweet extends Model
 {
     use CanBeFollowed, CanBeFavorited;
 

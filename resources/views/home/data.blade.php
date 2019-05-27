@@ -17,8 +17,8 @@
                             </div>
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <div>{{ $user->messages->count() }}</div>
-                                    <div class="text-uppercase text-muted small">Messages</div>
+                                    <div>{{ $user->tweets->count() }}</div>
+                                    <div class="text-uppercase text-muted small">Tweets</div>
 
                                 </div>
                                 <div>

@@ -35,9 +35,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function messages()
+    public function tweets()
     {
-        return $this->hasMany('App\Message');
+        return $this->hasMany('App\Tweet');
     }
 
     public function image(): string
@@ -52,7 +52,7 @@ class User extends Authenticatable
 
     public function reMessages()
     {
-        return $this->belongsToMany('App\Message', 're_messages')->withTimestamps();
+        return $this->belongsToMany('App\Tweet', 're_messages')->withTimestamps();
     }
 
     public static function getUserByName(string $name)

@@ -14,8 +14,8 @@
                     </div>
                     <div class="d-flex justify-content-between">
                         <div>
-                            <div>{{ $user->messages->count() }}</div>
-                            <div class="text-uppercase text-muted small">Messages</div>
+                            <div>{{ $user->tweets->count() }}</div>
+                            <div class="text-uppercase text-muted small">Tweets</div>
                         </div>
                         <div>
                             <div>{{ $user->followings()->get()->count() }}</div>
@@ -44,45 +44,45 @@
                 <div class="card">
                     <div class="card-body">
 
-                        {!! Form::open(['action' => 'MessagesController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
+                        {!! Form::open(['action' => 'TweetsController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
                         <div class="form-group">
-                            {{ Form::label('message', 'Message') }}
-                            {{ Form::textarea('message', '', ['class' => 'form-control', 'rows' => 3, 'placeholder' => 'Message']) }}
+                            {{ Form::label('tweet', 'Tweet') }}
+                            {{ Form::textarea('tweet', '', ['class' => 'form-control', 'rows' => 3, 'placeholder' => 'Tweet']) }}
                         </div>
                         {{ Form::button('<i class="fas fa-share"></i>', ['class' => 'btn btn-primary', 'type' => 'submit']) }}
                         {!! Form::close() !!}
 
-                        @if(count($messages) > 0)
+                        @if(count($tweets) > 0)
                             <hr style="width: 40%">
-                            @foreach ($messages as $message)
+                            @foreach ($tweets as $tweet)
                                 <div style="" class="card">
                                     <div class="card-header">
-                                        <img src="{{ $message->user->image() }}"
+                                        <img src="{{ $tweet->user->image() }}"
                                              class="rounded" alt="user icon" width="32" height="32">
                                         <a style="padding-left:10px;text-decoration: none;"
-                                           href="/{{ $message->user->cleanedName() }}">{{ $message->user->name }}</a>
+                                           href="/{{ $tweet->user->cleanedName() }}">{{ $tweet->user->name }}</a>
                                         <div class="float-right">
-                                            <span class="badge badge-secondary">{{ $message->favoriters()->get()->count() }}</span>
+                                            <span class="badge badge-secondary">{{ $tweet->favoriters()->get()->count() }}</span>
                                             -
-                                            @if($message->isFavoritedBy(auth()->user()))
+                                            @if($tweet->isFavoritedBy(auth()->user()))
                                                 <a class="btn btn-outline-dark"
-                                                   href="{{ route('message.favorite', $message->id) }}">
+                                                   href="{{ route('tweet.favorite', $tweet->id) }}">
                                                     <i class="fas fa-star"></i>
                                                 </a>
                                             @else
                                                 <a class="btn btn-outline-dark"
-                                                   href="{{ route('message.favorite', $message->id) }}">
+                                                   href="{{ route('tweet.favorite', $tweet->id) }}">
                                                     <i class="far fa-star"></i>
                                                 </a>
                                             @endif
 
-                                            @if(auth()->id() == $message->user->id)
-                                                {!! Form::open(['action' => ['MessagesController@destroy', $message->id], 'method' => 'POST', 'class' => 'float-right pl-2']) !!}
+                                            @if(auth()->id() == $tweet->user->id)
+                                                {!! Form::open(['action' => ['TweetsController@destroy', $tweet->id], 'method' => 'POST', 'class' => 'float-right pl-2']) !!}
                                                 {{ Form::hidden('_method', 'DELETE') }}
                                                 {{ Form::button('<i class="fas fa-trash"></i>', ['class' => 'btn btn-outline-danger', 'type' => 'submit']) }}
                                                 {!! Form::close() !!}
-                                            @elseif(!$message->remessage)
-                                                {!! Form::open(['action' => ['MessagesController@reMessage', $message->id], 'method' => 'POST', 'class' => 'float-right pl-2']) !!}
+                                            @elseif(!$tweet->remessage)
+                                                {!! Form::open(['action' => ['TweetsController@reMessage', $tweet->id], 'method' => 'POST', 'class' => 'float-right pl-2']) !!}
                                                 {{ Form::button('<i class="fas fa-retweet"></i>', ['class' => 'btn btn-outline-dark', 'type' => 'submit']) }}
                                                 {!! Form::close() !!}
                                             @endif
@@ -90,14 +90,14 @@
                                     </div>
                                     <div class="card-body">
                                         <p style="color:#666;">
-                                            @if($message->remessage)
+                                            @if($tweet->remessage)
                                                 <i class="fas fa-retweet"></i>
-                                                {{ $message->pivot->created_at->diffForHumans() }}
+                                                {{ $tweet->pivot->created_at->diffForHumans() }}
                                             @else
-                                                {{ $message->created_at->diffForHumans() }}
+                                                {{ $tweet->created_at->diffForHumans() }}
                                             @endif
                                         </p>
-                                        <p class="card-text">{{ $message->message }}</p>
+                                        <p class="card-text">{{ $tweet->message }}</p>
                                     </div>
                                 </div>
                                 @if(!$loop->last)

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Message;
+use App\Tweet;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -11,30 +11,32 @@ class ProfileController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except(['show', 'search']);
+        $this->middleware('auth')->except([
+            'show', 'search'
+        ]);
     }
 
     public function index()
     {
         $user = auth()->user();
-        $messages = array();
+        $tweets = array();
 
-        foreach ($user->reMessages as $message) {
-            $message['remessage'] = true;
-            array_push($messages, $message);
+        foreach ($user->reMessages as $tweet) {
+            $tweet['remessage'] = true;
+            array_push($tweets, $tweet);
         }
 
-        foreach ($user->messages as $message) {
-            array_push($messages, $message);
+        foreach ($user->tweets as $tweet) {
+            array_push($tweets, $tweet);
         }
 
         foreach ($user->followings()->get() as $followedUser) {
-            foreach ($followedUser->messages as $message) {
-                array_push($messages, $message);
+            foreach ($followedUser->$tweets as $tweet) {
+                array_push($tweets, $tweet);
             }
         }
 
-        $messages = collect($messages)->sort(function (Message $a, Message $b) use ($user) {
+        $tweets = collect($tweets)->sort(function (Tweet $a, Tweet $b) use ($user) {
             if ($a->remessage && $b->remessage) {
                 return $a->pivot->created_at < $b->pivot->created_at;
             } else if ($a->remessage && !$b->remessage) {
@@ -48,7 +50,7 @@ class ProfileController extends Controller
 
         return view('home.home')->with([
             'user' => $user,
-            'messages' => $messages,
+            'tweets' => $tweets,
         ]);
     }
 
@@ -60,18 +62,18 @@ class ProfileController extends Controller
             return abort(404);
         }
 
-        $messages = array();
+        $tweets = array();
 
-        foreach ($user->reMessages as $message) {
-            $message['remessage'] = true;
-            array_push($messages, $message);
+        foreach ($user->reMessages as $tweet) {
+            $tweet['remessage'] = true;
+            array_push($tweets, $tweet);
         }
 
-        foreach ($user->messages as $message) {
-            array_push($messages, $message);
+        foreach ($user->tweets as $tweet) {
+            array_push($tweets, $tweet);
         }
 
-        $messages = collect($messages)->sort(function (Message $a, Message $b) use ($user) {
+        $tweets = collect($tweets)->sort(function (Tweet $a, Tweet $b) use ($user) {
             if ($a->remessage && $b->remessage) {
                 return $a->pivot->created_at < $b->pivot->created_at;
             } else if ($a->remessage && !$b->remessage) {
@@ -85,7 +87,7 @@ class ProfileController extends Controller
 
         return view('profile')->with([
             'user' => $user,
-            'messages' => $messages,
+            'tweets' => $tweets,
         ]);
     }
 
