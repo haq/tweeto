@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateReMessageTable extends Migration
+class CreateReTweetTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateReMessageTable extends Migration
      */
     public function up()
     {
-        Schema::create('re_messages', function (Blueprint $table) {
+        Schema::create('re_tweets', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
 
@@ -34,6 +34,6 @@ class CreateReMessageTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('re_messages');
+        Schema::dropIfExists('re_tweets');
     }
 }

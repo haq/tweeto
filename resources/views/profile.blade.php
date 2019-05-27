@@ -75,7 +75,9 @@
                             </div>
                             {{ Form::button('<i class="fas fa-share"></i>', ['class' => 'btn btn-primary', 'type' => 'submit']) }}
                             {!! Form::close() !!}
-                            <hr style="width: 40%">
+                            @if(count($tweets) > 0)
+                                <hr style="width: 40%">
+                            @endif
                         @endif
 
                         @foreach ($tweets as $tweet)
@@ -107,8 +109,8 @@
                                             {{ Form::hidden('_method', 'DELETE') }}
                                             {{ Form::button('<i class="fas fa-trash"></i>', ['class' => 'btn btn-outline-danger', 'type' => 'submit']) }}
                                             {!! Form::close() !!}
-                                        @elseif(!$tweet->remessage)
-                                            {!! Form::open(['action' => ['TweetsController@reMessage', $tweet->id], 'method' => 'POST', 'class' => 'float-right pl-2']) !!}
+                                        @elseif(!$tweet->isReTweet)
+                                            {!! Form::open(['action' => ['TweetsController@reTweet', $tweet->id], 'method' => 'POST', 'class' => 'float-right pl-2']) !!}
                                             {{ Form::button('<i class="fas fa-retweet"></i>', ['class' => 'btn btn-outline-dark', 'type' => 'submit']) }}
                                             {!! Form::close() !!}
                                         @endif
@@ -116,7 +118,7 @@
                                 </div>
                                 <div class="card-body">
                                     <p style="color:#666;">
-                                        @if($tweet->remessage)
+                                        @if($tweet->isReTweet)
                                             <i class="fas fa-retweet"></i>
                                             {{ $tweet->pivot->created_at->diffForHumans() }}
                                         @else

@@ -47,8 +47,8 @@ class ProfileController extends Controller
     {
         $tweets = array();
 
-        foreach ($user->reMessages as $tweet) {
-            $tweet['remessage'] = true;
+        foreach ($user->reTweets as $tweet) {
+            $tweet['isReTweet'] = true;
             array_push($tweets, $tweet);
         }
 

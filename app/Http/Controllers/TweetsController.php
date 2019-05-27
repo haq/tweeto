@@ -39,21 +39,21 @@ class TweetsController extends Controller
         return back()->with('success', 'Tweet deleted.');
     }
 
-    public function favorite(Tweet $message)
+    public function favorite(Tweet $tweet)
     {
         $user = auth()->user();
-        if ($user->hasFavorited($message)) {
-            $user->unfavorite($message);
+        if ($user->hasFavorited($tweet)) {
+            $user->unfavorite($tweet);
             return back()->with('success', 'Unfavorited tweet.');
         } else {
-            $user->favorite($message);
+            $user->favorite($tweet);
             return back()->with('success', 'Favorited tweet.');
         }
     }
 
-    public function reMessage(Request $request, Tweet $message)
+    public function reTweet(Request $request, Tweet $tweet)
     {
-        auth()->user()->reMessages()->attach($message);
+        auth()->user()->reMessages()->attach($tweet);
         return back()->with('success', 'Re messaged.');
     }
 

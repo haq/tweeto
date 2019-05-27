@@ -5,7 +5,7 @@ Auth::routes();
 Route::post('/message', 'TweetsController@store')->name('tweet.store');
 Route::delete('/message/{message}', 'TweetsController@destroy')->name('tweet.destroy');
 Route::get('/message/{message}/favorite', 'TweetsController@favorite')->name('tweet.favorite');
-Route::post('/message/{message}/remessage', 'TweetsController@reMessage')->name('tweet.remessage');
+Route::post('/message/{message}/retweet', 'TweetsController@reTweet')->name('tweet.retweet');
 
 Route::get('/', 'ProfileController@index')->name('user.home');
 Route::get('/following', 'ProfileController@following')->name('user.following');

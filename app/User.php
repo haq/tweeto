@@ -40,6 +40,11 @@ class User extends Authenticatable
         return $this->hasMany('App\Tweet');
     }
 
+    public function reTweets()
+    {
+        return $this->belongsToMany('App\Tweet', 're_tweets')->withTimestamps();
+    }
+
     public function image(): string
     {
         return 'https://www.gravatar.com/avatar/' . md5(strtolower(trim($this->email)));
@@ -48,11 +53,6 @@ class User extends Authenticatable
     public function cleanedName(): string
     {
         return strtolower(trim(str_replace(' ', '', $this->name)));
-    }
-
-    public function reMessages()
-    {
-        return $this->belongsToMany('App\Tweet', 're_messages')->withTimestamps();
     }
 
     public static function getUserByName(string $name)
