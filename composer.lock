@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
-            "version": "2.2.0",
+            "version": "2.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/algolia/algoliasearch-client-php.git",
-                "reference": "d2477f550cabf12c99a018183d2bd4494ed39b0b"
+                "reference": "55f1a7e2549ac1865d94ff00e8ec6d4aeee952e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/algolia/algoliasearch-client-php/zipball/d2477f550cabf12c99a018183d2bd4494ed39b0b",
-                "reference": "d2477f550cabf12c99a018183d2bd4494ed39b0b",
+                "url": "https://api.github.com/repos/algolia/algoliasearch-client-php/zipball/55f1a7e2549ac1865d94ff00e8ec6d4aeee952e6",
+                "reference": "55f1a7e2549ac1865d94ff00e8ec6d4aeee952e6",
                 "shasum": ""
             },
             "require": {
@@ -30,6 +30,8 @@
                 "psr/simple-cache": "^1.0"
             },
             "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.0",
+                "fzaninotto/faker": "^1.8",
                 "phpunit/phpunit": "^4.8",
                 "symfony/yaml": "^2.0 || ^4.0"
             },
@@ -72,7 +74,7 @@
                 "php",
                 "search"
             ],
-            "time": "2019-01-23T10:44:28+00:00"
+            "time": "2019-05-15T09:16:37+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
