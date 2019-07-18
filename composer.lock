@@ -1221,16 +1221,16 @@
         },
         {
             "name": "overtrue/laravel-follow",
-            "version": "1.1.12",
+            "version": "1.1.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/overtrue/laravel-follow.git",
-                "reference": "53009ab8fb2e999c6a36dd27c96492907984e32a"
+                "reference": "97b40d83478a4515f7cf40ce88ec5908cb0b1d69"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/overtrue/laravel-follow/zipball/53009ab8fb2e999c6a36dd27c96492907984e32a",
-                "reference": "53009ab8fb2e999c6a36dd27c96492907984e32a",
+                "url": "https://api.github.com/repos/overtrue/laravel-follow/zipball/97b40d83478a4515f7cf40ce88ec5908cb0b1d69",
+                "reference": "97b40d83478a4515f7cf40ce88ec5908cb0b1d69",
                 "shasum": ""
             },
             "require": {
@@ -1265,7 +1265,7 @@
                 }
             ],
             "description": "Laravel 5 User Based System",
-            "time": "2019-05-22T07:58:35+00:00"
+            "time": "2019-05-26T11:14:24+00:00"
         },
         {
             "name": "paragonie/random_compat",
