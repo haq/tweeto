@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9aa5bab41a9723a937433e64d51263c1",
+    "content-hash": "3e2167ecad2297cd02dd3fa3700d3eab",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
-            "version": "2.2.6",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/algolia/algoliasearch-client-php.git",
-                "reference": "55f1a7e2549ac1865d94ff00e8ec6d4aeee952e6"
+                "reference": "823dc934f1ad82cb43988e474a4597c7e660104b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/algolia/algoliasearch-client-php/zipball/55f1a7e2549ac1865d94ff00e8ec6d4aeee952e6",
-                "reference": "55f1a7e2549ac1865d94ff00e8ec6d4aeee952e6",
+                "url": "https://api.github.com/repos/algolia/algoliasearch-client-php/zipball/823dc934f1ad82cb43988e474a4597c7e660104b",
+                "reference": "823dc934f1ad82cb43988e474a4597c7e660104b",
                 "shasum": ""
             },
             "require": {
@@ -74,7 +74,7 @@
                 "php",
                 "search"
             ],
-            "time": "2019-05-15T09:16:37+00:00"
+            "time": "2019-07-18T18:05:23+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
