@@ -1,6 +1,6 @@
 <?php
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 Route::post('/message', 'TweetsController@store')->name('tweet.store');
 Route::delete('/message/{message}', 'TweetsController@destroy')->name('tweet.destroy');

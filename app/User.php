@@ -2,16 +2,12 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Notifications\Notifiable;
 use Overtrue\LaravelFollow\Traits\CanBeFollowed;
 use Overtrue\LaravelFollow\Traits\CanFavorite;
 use Overtrue\LaravelFollow\Traits\CanFollow;
-use Overtrue\LaravelFollow\Traits\CanLike;
-use Symfony\Component\Debug\Debug;
-use Laravel\Scout\Searchable;
 
 /**
  * @property mixed email
@@ -19,12 +15,12 @@ use Laravel\Scout\Searchable;
  * @property mixed following
  * @property mixed id
  */
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
-    use Notifiable, Searchable, CanFollow, CanFavorite, CanBeFollowed;
+    use Notifiable, CanFollow, CanFavorite, CanBeFollowed;
 
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'api_token',
     ];
 
     protected $hidden = [
